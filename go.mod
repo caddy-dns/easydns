@@ -1,4 +1,4 @@
-module github.com/sdowns/caddy-dns-easydns
+module github.com/caddy-dns/easydns
 
 go 1.20
 
