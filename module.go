@@ -1,8 +1,6 @@
 package easydns
 
 import (
-	"fmt"
-
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	easydns "github.com/libdns/easydns"
@@ -23,29 +21,27 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 	}
 }
 
-// TODO: This is just an example. Useful to allow env variable placeholders; update accordingly.
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
-	p.Provider.APIToken = caddy.NewReplacer().ReplaceAll(p.Provider.APIToken, "")
-	return fmt.Errorf("TODO: not implemented")
+	repl := caddy.NewReplacer()
+
+	p.Provider.APIToken = repl.ReplaceAll(p.Provider.APIToken, "")
+	p.Provider.APIKey = repl.ReplaceAll(p.Provider.APIKey, "")
+	// Use production URL for the EasyDNS API by default.
+	// The testing URL is: https://sandbox.rest.easydns.net
+	p.Provider.APIUrl = repl.ReplaceAll(p.Provider.APIUrl, "https://rest.easydns.net")
+	return nil
 }
 
-// TODO: This is just an example. Update accordingly.
 // UnmarshalCaddyfile sets up the DNS provider from Caddyfile tokens. Syntax:
 //
-//	providername [<api_token>] {
-//	    api_token <api_token>
+//	providername {
+//	    api_token <easydns_api_token>
+//		api_key <easydns_api_key>
+//		api_url <easydns_api_url>     # optional, defaults to https://rest.easydns.net
 //	}
-//
-// **THIS IS JUST AN EXAMPLE AND NEEDS TO BE CUSTOMIZED.**
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
-		if d.NextArg() {
-			p.Provider.APIToken = d.Val()
-		}
-		if d.NextArg() {
-			return d.ArgErr()
-		}
 		for nesting := d.Nesting(); d.NextBlock(nesting); {
 			switch d.Val() {
 			case "api_token":
@@ -60,7 +56,7 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 			case "api_key":
 				if p.Provider.APIKey != "" {
-					return d.Err("API token already set")
+					return d.Err("API key already set")
 				}
 				if d.NextArg() {
 					p.Provider.APIKey = d.Val()
@@ -70,7 +66,7 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 			case "api_url":
 				if p.Provider.APIUrl != "" {
-					return d.Err("API token already set")
+					return d.Err("API url already set")
 				}
 				if d.NextArg() {
 					p.Provider.APIUrl = d.Val()

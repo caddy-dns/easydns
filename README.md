@@ -1,14 +1,3 @@
-**DEVELOPER INSTRUCTIONS:**
-
-- Update module name in go.mod
-- Update dependencies to latest versions
-- Update name and year in license
-- Customize configuration and Caddyfile parsing
-- Update godocs / comments (especially provider name and nuances)
-- Update README and remove this section
-
----
-
 EasyDNS module for Caddy
 ===========================
 
@@ -32,7 +21,8 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
 			"provider": {
 				"name": "easydns",
 				"api_token": "YOUR_PROVIDER_API_TOKEN",
-				"api_key": "YOUR_PROVIDER_API_KEY"
+				"api_key": "YOUR_PROVIDER_API_KEY",
+				"api_url": "https://rest.easydns.net"
 			}
 		}
 	}
@@ -44,13 +34,21 @@ or with the Caddyfile:
 ```
 # globally
 {
-	acme_dns easydns ...
+	acme_dns easydns {
+		api_token <your_api_token>
+		api_key <your_api_key>
+		api_url "https://rest.easydns.net"
+	}
 }
 ```
 
 ```
 # one site
 tls {
-	dns easydns ...
+	dns easydns {
+		api_token <your_api_token>
+		api_key <your_api_key>
+		api_url "https://rest.easydns.net"
+	}
 }
 ```
