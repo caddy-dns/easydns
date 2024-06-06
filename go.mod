@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/caddyserver/caddy/v2 v2.6.4
-	github.com/libdns/easydns v0.2.0
+	github.com/libdns/easydns v0.2.1-0.20240606140112-b1bd1f408d77
 )
 
 require (
@@ -17,7 +17,7 @@ require (
 	github.com/google/pprof v0.0.0-20230602150820-91b7bce49751 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/libdns/libdns v0.2.1 // indirect
+	github.com/libdns/libdns v0.2.2 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mholt/acmez v1.2.0 // indirect
 	github.com/miekg/dns v1.1.55 // indirect
